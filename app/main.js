@@ -31,19 +31,15 @@ require([
 				});
 				//then generate 3x3 matrices
 				var $samples = $('#samples');
-				var sampleWidth = 3;
-				var sampleHeight = 3;
-				var samples = generatePixelSamples(input, sampleWidth, sampleHeight);
-				for(var i = 0; i < samples.length; i++) {
-					var $canvas = $('<canvas></canvas');
-					var $sample = $('<div>' + samples[i].count + 'x</div>').append($canvas).appendTo($samples);
-					drawPixelMatrix({
-						pixelMatrix: samples[i].pixelMatrix,
-						$canvas: $canvas,
-						scale: 5,
-						fitCanvas: true
-					});
-				}
+				$('#generate-samples').on('click', function() {
+					$samples.empty();
+					var sampleWidth = 3;
+					var sampleHeight = 3;
+					var samples = generatePixelSamples(input, sampleWidth, sampleHeight);
+					for(var i = 0; i < samples.length; i++) {
+						samples[i].addToDOM($samples);
+					}
+				});
 			});
 	});
 });

@@ -6,6 +6,21 @@
 			body {
 				image-rendering: pixelated;
 			}
+			.pixel-sample {
+				float: left;
+				padding: 3px 7px;
+			}
+			.pixel-sample input {
+				width: 25px;
+				text-align: center;
+			}
+			.pixel-sample canvas {
+				position: relative;
+				top: 2px;
+			}
+			button {
+				margin-bottom: 10px;
+			}
 		</style>
 	</head>
 	<body>
@@ -13,6 +28,7 @@
 		<h2>Input:</h2>
 		<canvas id="input-canvas"></canvas>
 		<h2>Samples:</h2>
+		<button id="generate-samples">Generate Samples</button>
 		<div id="samples"></div>
 	</body>
 </html>

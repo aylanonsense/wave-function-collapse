@@ -4,5 +4,6 @@
 		".git",
 		"dist/*"
 	],
-    "exec": "npm run build && npm start"
+    "exec": "npm run build && npm start",
+    "ext": "js json html"
 }

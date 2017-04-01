@@ -18,12 +18,13 @@
   },
   "homepage": "https://github.com/bridgs/wave-function-collapse#readme",
   "dependencies": {
-    "express": "^4.15.2",
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "mustache-loader": "^0.4.1",
+    "webpack": "^2.3.2",
     "jquery": "^3.2.1",
     "mustache": "^2.3.0",
     "promise": "^7.1.1"
-  },
-  "devDependencies": {
-    "webpack": "^2.3.2"
   }
 }
