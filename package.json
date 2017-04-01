@@ -1,0 +1,25 @@
+{
+  "name": "wave-function-collapse",
+  "version": "0.0.1",
+  "description": "My implementation of the Wave Function Collapse algorithm.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bridgs/wave-function-collapse.git"
+  },
+  "author": "bridgs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bridgs/wave-function-collapse/issues"
+  },
+  "homepage": "https://github.com/bridgs/wave-function-collapse#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "jquery": "^3.2.1",
+    "mustache": "^2.3.0",
+    "requirejs": "^2.3.3"
+  }
+}
