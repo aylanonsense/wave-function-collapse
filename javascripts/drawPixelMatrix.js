@@ -1,5 +1,5 @@
 define([
-	'PixelMatrixDrawer'
+	'./PixelMatrixDrawer'
 ],function(
 	PixelMatrixDrawer
 ) {

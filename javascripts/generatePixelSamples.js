@@ -1,5 +1,5 @@
 define([
-	'PixelMatrix'
+	'./PixelMatrix'
 ],function(
 	PixelMatrix
 ) {

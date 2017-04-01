@@ -2,8 +2,9 @@
   "name": "wave-function-collapse",
   "version": "0.0.1",
   "description": "My implementation of the Wave Function Collapse algorithm.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +21,9 @@
     "express": "^4.15.2",
     "jquery": "^3.2.1",
     "mustache": "^2.3.0",
-    "requirejs": "^2.3.3"
+    "promise": "^7.1.1"
+  },
+  "devDependencies": {
+    "webpack": "^2.3.2"
   }
 }

@@ -1,12 +1,12 @@
-define([
+require([
 	'jquery',
 	'Mustache',
-	'loadImageData',
-	'generatePixelSamples',
-	'drawPixelMatrix',
-	'ColorTable',
-	'PixelMatrix',
-	'PixelMatrixDrawer'
+	'./loadImageData',
+	'./generatePixelSamples',
+	'./drawPixelMatrix',
+	'./ColorTable',
+	'./PixelMatrix',
+	'./PixelMatrixDrawer'
 ], function(
 	$,
 	Mustache,
@@ -17,7 +17,7 @@ define([
 	PixelMatrix,
 	PixelMatrixDrawer
 ) {
-	return function main() {
+	$(function() {
 		loadImageData('/img/pipes.png')
 			.then(function(data) {
 				//turn the raw image data into something consumable
@@ -45,5 +45,5 @@ define([
 					});
 				}
 			});
-	};
+	});
 });
