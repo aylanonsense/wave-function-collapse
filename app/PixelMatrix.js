@@ -6,6 +6,9 @@ define(function() {
 		this.colorTable = params.colorTable;
 	}
 	PixelMatrix.prototype.getPixelAt = function(x, y) {
+		if(x < 0 || x >= this.width || y < 0 || y >= this.height) {
+			return null;
+		}
 		return this.pixels[x + y * this.width];
 	};
 	PixelMatrix.prototype.equals = function(other) {
@@ -19,6 +22,30 @@ define(function() {
 			}
 		}
 		return true;
+	};
+	PixelMatrix.prototype.draw = function(params) {
+		//collect params
+		var $canvas = params.$canvas;
+		var ctx = $canvas[0].getContext('2d');
+		var offsetX = params.x || 0;
+		var offsetY = params.y || 0;
+		var scale = params.scale || 1;
+		var fitCanvas = params.fitCanvas || false;
+		//fit canvas
+		if(fitCanvas) {
+			$canvas.attr({
+				width: scale * this.width,
+				height: scale * this.height
+			});
+		}
+		//draw
+		for(var x = 0; x < this.width; x++) {
+			for(var y = 0; y < this.height; y++) {
+				var color = this.colorTable.lookUpIndex(this.getPixelAt(x, y));
+				ctx.fillStyle = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + color.a + ')';
+				ctx.fillRect(scale * x + offsetX, scale * y + offsetY, scale, scale);
+			}
+		}
 	};
 	PixelMatrix.createFromImageData = function(pixelChannels, width, height, colorTable) {
 		var pixels = [];

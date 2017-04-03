@@ -1,11 +1,9 @@
 define([
 	'jquery',
-	'./drawPixelMatrix',
 	'./pixelSample.html'
 ],
 function(
 	$,
-	drawPixelmatrix,
 	formatPixelSample
 ) {
 	function PixelMatrix(params) {
@@ -14,7 +12,7 @@ function(
 		this.$ele = null;
 		this.$input = null;
 	}
-	PixelMatrix.prototype.addToDOM = function($parent) {
+	PixelMatrix.prototype.addToDOM = function($parent, scale) {
 		var self = this;
 		this.$ele = $(formatPixelSample({
 			count: this._count
@@ -24,17 +22,16 @@ function(
 			var count = +self.$input.val();
 			self.count = isNaN(count) ? self._count : count;
 		});
-		drawPixelmatrix({
-			pixelMatrix: this.pixelMatrix,
+		this.pixelMatrix.draw({
 			$canvas: this.$ele.find('canvas'),
-			scale: 5,
+			scale: scale,
 			fitCanvas: true
 		});
 	};
 	Object.defineProperty(PixelMatrix.prototype, 'count', {
 		get: function() {
 			if(this.$ele) {
-				var count = +self.$input.val();
+				var count = +this.$input.val();
 				return isNaN(count) ? this._count : count;
 			}
 			else {

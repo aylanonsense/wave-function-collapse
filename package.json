@@ -21,10 +21,10 @@
     "express": "^4.15.2"
   },
   "devDependencies": {
-    "mustache-loader": "^0.4.1",
-    "webpack": "^2.3.2",
     "jquery": "^3.2.1",
     "mustache": "^2.3.0",
-    "promise": "^7.1.1"
+    "mustache-loader": "^0.4.1",
+    "promise": "^7.1.1",
+    "webpack": "^2.3.2"
   }
 }

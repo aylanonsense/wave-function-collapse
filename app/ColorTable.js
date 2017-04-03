@@ -1,6 +1,7 @@
 define(function() {
-	function ColorTable() {
+	function ColorTable(params) {
 		this.colors = [];
+		this.errorColor = params.errorColor;
 	}
 	ColorTable.prototype.hasColor = function(r, g, b, a) {
 		return this.lookUpColor(r, g, b, a) >= 0;

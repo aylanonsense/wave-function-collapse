@@ -6,17 +6,22 @@
 			body {
 				image-rendering: pixelated;
 			}
+			#samples {
+				display: flex;
+				flex-wrap: wrap;
+			}
 			.pixel-sample {
-				float: left;
+				display: flex;
+				flex-direction: column;
 				padding: 3px 7px;
 			}
 			.pixel-sample input {
-				width: 25px;
+				width: 24px;
+				align-self: center;
 				text-align: center;
 			}
 			.pixel-sample canvas {
-				position: relative;
-				top: 2px;
+				align-self: center;
 			}
 			button {
 				margin-bottom: 10px;
@@ -25,8 +30,11 @@
 	</head>
 	<body>
 		<h1>wave-function-collapse</h1>
+		<h2>Output:</h2>
+		<button id="generate-output">Generate Output</button>
+		<div><canvas id="output-canvas"></canvas></div>
 		<h2>Input:</h2>
-		<canvas id="input-canvas"></canvas>
+		<div><canvas id="input-canvas"></canvas></div>
 		<h2>Samples:</h2>
 		<button id="generate-samples">Generate Samples</button>
 		<div id="samples"></div>
