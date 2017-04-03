@@ -6,13 +6,25 @@ function(
 	$,
 	formatPixelSample
 ) {
-	function PixelMatrix(params) {
+	function PixelSample(params) {
 		this.pixelMatrix = params.pixelMatrix;
 		this._count = params.count;
 		this.$ele = null;
 		this.$input = null;
 	}
-	PixelMatrix.prototype.addToDOM = function($parent, scale) {
+	PixelSample.prototype.matches = function(sample, dx, dy) {
+		for(var x = 0; x < this.pixelMatrix.width; x++) {
+			for(var y = 0; y < this.pixelMatrix.height; y++) {
+				var colorIndex = this.pixelMatrix.getPixelAt(x, y);
+				var otherColorIndex = sample.pixelMatrix.getPixelAt(x + dx, y + dy);
+				if(otherColorIndex !== null && otherColorIndex !== colorIndex) {
+					return false;
+				}
+			}
+		}
+		return true;
+	};
+	PixelSample.prototype.addToDOM = function($parent, scale) {
 		var self = this;
 		this.$ele = $(formatPixelSample({
 			count: this._count
@@ -28,15 +40,9 @@ function(
 			fitCanvas: true
 		});
 	};
-	Object.defineProperty(PixelMatrix.prototype, 'count', {
+	Object.defineProperty(PixelSample.prototype, 'count', {
 		get: function() {
-			if(this.$ele) {
-				var count = +this.$input.val();
-				return isNaN(count) ? this._count : count;
-			}
-			else {
-				return this._count;
-			}
+			return this._count;
 		},
 		set: function(count) {
 			this._count = count;
@@ -45,5 +51,5 @@ function(
 			}
 		}
 	});
-	return PixelMatrix;
+	return PixelSample;
 });

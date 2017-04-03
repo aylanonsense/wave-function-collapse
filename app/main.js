@@ -5,7 +5,7 @@ require([
 	'./generatePixelSamples',
 	'./ColorTable',
 	'./PixelMatrix',
-	'./PossibilityMatrix'
+	'./PossibilityMatrix2'
 ], function(
 	$,
 	Mustache,
@@ -17,7 +17,7 @@ require([
 ) {
 	var SCALE = 16;
 	$(function() {
-		loadImageData('/img/boxes.png')
+		loadImageData('/img/pipes.png')
 			.then(function(data) {
 				//turn the raw image data into something consumable
 				var colorTable = new ColorTable({
@@ -44,8 +44,11 @@ require([
 				// $('#generate-output').on('click', function() {
 					var possibilityMatrix = new PossibilityMatrix({
 						samples: samples,
-						width: 30,
-						height: 20
+						sampleWidth: sampleWidth,
+						sampleHeight: sampleHeight,
+						width: 50,
+						height: 25,
+						colorTable: colorTable
 					});
 					possibilityMatrix.draw({
 						$canvas: $('#output-canvas'),
@@ -53,11 +56,7 @@ require([
 						fitCanvas: true
 					});
 					var interval = setInterval(function() {
-						var possibilityPixel = possibilityMatrix.getLowestEntropyPixel();
-						if(possibilityPixel) {
-							possibilityMatrix.resolvePixel(possibilityPixel);
-						}
-						else {
+						if(possibilityMatrix.step()) {
 							clearInterval(interval);
 						}
 						possibilityMatrix.draw({
@@ -65,7 +64,7 @@ require([
 							scale: SCALE,
 							fitCanvas: true
 						});
-					}, 10);
+					}, 5);
 				// });
 			})
 			.catch(function(err) {

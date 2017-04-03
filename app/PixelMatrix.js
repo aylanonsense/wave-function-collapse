@@ -9,7 +9,9 @@ define(function() {
 		if(x < 0 || x >= this.width || y < 0 || y >= this.height) {
 			return null;
 		}
-		return this.pixels[x + y * this.width];
+		else {
+			return this.pixels[x + y * this.width];
+		}
 	};
 	PixelMatrix.prototype.equals = function(other) {
 		//TODO return false if they use different color tables...?
@@ -38,7 +40,7 @@ define(function() {
 				height: scale * this.height
 			});
 		}
-		//draw
+		//draw pixels
 		for(var x = 0; x < this.width; x++) {
 			for(var y = 0; y < this.height; y++) {
 				var color = this.colorTable.lookUpIndex(this.getPixelAt(x, y));
