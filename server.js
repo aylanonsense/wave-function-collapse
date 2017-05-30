@@ -11,6 +11,11 @@ app.get('/bundle.js', function(req, res) {
 app.get('/0.bundle.js', function(req, res) {
 	res.sendFile(path.join(__dirname, '/dist/0.bundle.js'));
 });
-
+app.get('/gif.worker.js', function(req, res) {
+	res.sendFile(path.join(__dirname, '/lib/gifjs/gif.worker.js'));
+});
+app.get('/gif.worker.js.map', function(req, res) {
+	res.sendFile(path.join(__dirname, '/lib/gifjs/gif.worker.js.map'));
+});
 //start the web server
 app.listen(process.env.PORT || 3000);

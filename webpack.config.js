@@ -16,5 +16,10 @@ module.exports = {
 				// loader: 'mustache?noShortcut'
 			}
 		]
+	},
+	resolve: {
+		alias: {
+			GIF: "./lib/gifjs/gif.js"
+		}
 	}
 };

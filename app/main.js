@@ -6,7 +6,7 @@ require([
 	'./ColorTable',
 	'./PixelMatrix',
 	'./PossibilityMatrix2',
-	'GIF'
+	'../lib/gifjs/gif'
 ], function(
 	$,
 	Mustache,
@@ -19,6 +19,7 @@ require([
 ) {
 	$(function() {
 		//vars
+		var APPROX_FRAMES = 50;
 		var SCALE = 8;
 		var inputColorTable = null;
 		var inputMatrix = null;
@@ -30,7 +31,9 @@ require([
 		var outputMatrix = null;
 		var outputIsGenerated = false;
 		var maxOutputEntropy = null;
+		var prevFrameEntropy = null;
 		var outputGenerateInterval = null;
+		var gif = null;
 		//input section selectors
 		var $inputSelect = $('#select-input-image');
 		var $loadInput = $('#load-input-image');
@@ -51,10 +54,20 @@ require([
 		var $resetOutput = $('#reset-output');
 		var $stepOutput = $('#step-output');
 		var $generateOutput = $('#generate-output');
+		var $saveAsGif = $('#save-as-gif');
 		var $entropyRemaining = $('#entropy-remaining');
 		var $entropyBar = $('#entropy-bar');
 		var $entropyBarColor = $('#entropy-bar-color');
 		var $outputCanvas = $('#output-canvas');
+		//helper functions
+		function cloneCanvas(canvas) {
+			var clone = document.createElement('canvas');
+			var ctx = clone.getContext('2d');
+			clone.width = canvas.width;
+			clone.height = canvas.height;
+			ctx.drawImage(canvas, 0, 0);
+			return clone;
+		}
 		//input section
 		$loadInput.on('click', function() {
 			loadImageData($inputSelect.val())
@@ -124,6 +137,14 @@ require([
 			});
 			$generateOutput.prop('disabled', false);
 			$stepOutput.prop('disabled', false);
+			$saveAsGif.prop('disabled', true);
+			gif = new GIF({
+				workers: 10,
+				quality: 1,
+				debug: true
+			});
+			gif.addFrame(cloneCanvas($outputCanvas[0]), { delay: 1000 });
+			prevFrameEntropy = maxOutputEntropy;
 		}
 		function startGenerating() {
 			if(!outputIsGenerated) {
@@ -150,14 +171,21 @@ require([
 				$entropyRemaining.text(Math.ceil(entropy));
 				$entropyBarColor.css({ width: Math.ceil(100 * entropy / maxOutputEntropy) + '%' });
 				outputMatrix.draw({
-					$canvas: $('#output-canvas'),
+					$canvas: $outputCanvas,
 					scale: SCALE,
 					changesOnly: true
 				});
+				if (entropy + maxOutputEntropy / (APPROX_FRAMES + 1) < prevFrameEntropy || outputIsGenerated) {
+					gif.addFrame(cloneCanvas($outputCanvas[0]), {
+						delay: outputIsGenerated ? 2000 : 100
+					});
+					prevFrameEntropy = entropy;
+				}
 				if(outputIsGenerated) {
 					stopGenerating();
 					$generateOutput.prop('disabled', true);
 					$stepOutput.prop('disabled', true);
+					$saveAsGif.prop('disabled', false);
 				}
 			}
 			return outputIsGenerated;
@@ -178,6 +206,13 @@ require([
 				stopGenerating();
 				step();
 			}
+		});
+		$saveAsGif.on('click', function() {
+			$saveAsGif.prop('disabled', true);
+			gif.on('finished', function(blob) {
+				window.open(URL.createObjectURL(blob));
+			});
+			gif.render();
 		});
 	});
 });
