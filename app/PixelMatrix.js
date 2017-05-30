@@ -25,6 +25,76 @@ define(function() {
 		}
 		return true;
 	};
+	PixelMatrix.prototype.flipHorizontal = function() {
+		var pixels = [];
+		for(var y = 0; y < this.height; y++) {
+			for(var x = this.width - 1; x >= 0; x--) {
+				pixels.push(this.getPixelAt(x, y));
+			}
+		}
+		return new PixelMatrix({
+			pixels: pixels,
+			width: this.width,
+			height: this.height,
+			colorTable: this.colorTable
+		});
+	};
+	PixelMatrix.prototype.flipVertical = function() {
+		var pixels = [];
+		for(var y = this.height - 1; y >= 0; y--) {
+			for(var x = 0; x < this.width; x++) {
+				pixels.push(this.getPixelAt(x, y));
+			}
+		}
+		return new PixelMatrix({
+			pixels: pixels,
+			width: this.width,
+			height: this.height,
+			colorTable: this.colorTable
+		});
+	};
+	PixelMatrix.prototype.rotate90Clockwise = function() {
+		var pixels = [];
+		for(var x = 0; x < this.width; x++) {
+			for(var y = this.height - 1; y >= 0; y--) {
+				pixels.push(this.getPixelAt(x, y));
+			}
+		}
+		return new PixelMatrix({
+			pixels: pixels,
+			width: this.height,
+			height: this.width,
+			colorTable: this.colorTable
+		});
+	};
+	PixelMatrix.prototype.rotate180Clockwise = function() {
+		var pixels = [];
+		for(var y = this.height - 1; y >= 0; y--) {
+			for(var x = this.width - 1; x >= 0; x--) {
+				pixels.push(this.getPixelAt(x, y));
+			}
+		}
+		return new PixelMatrix({
+			pixels: pixels,
+			width: this.width,
+			height: this.height,
+			colorTable: this.colorTable
+		});
+	};
+	PixelMatrix.prototype.rotate270Clockwise = function() {
+		var pixels = [];
+		for(var x = this.width - 1; x >= 0; x--) {
+			for(var y = 0; y < this.height; y++) {
+				pixels.push(this.getPixelAt(x, y));
+			}
+		}
+		return new PixelMatrix({
+			pixels: pixels,
+			width: this.height,
+			height: this.width,
+			colorTable: this.colorTable
+		});
+	};
 	PixelMatrix.prototype.draw = function(params) {
 		//collect params
 		var $canvas = params.$canvas;

@@ -6,6 +6,15 @@
 			body {
 				image-rendering: pixelated;
 			}
+			.controls {
+				margin-bottom: 10px;
+			}
+			#input-canvas {
+				border: 1px solid black;
+			}
+			#output-canvas {
+				border: 1px solid black;
+			}
 			#samples {
 				display: flex;
 				flex-wrap: wrap;
@@ -23,20 +32,77 @@
 			.pixel-sample canvas {
 				align-self: center;
 			}
-			button {
-				margin-bottom: 10px;
+			#entropy-remaining {
+				display: inline-block;
+				width: 60px;
+			}
+			#entropy-bar {
+				display: inline-block;
+				width: 340px;
+				height: 10px;
+				margin-top: 10px;
+				border: 1px solid #000;
+			}
+			#entropy-bar-color {
+				width: 0%;
+				height: 100%;
+				background-color: #6ad2f9;
 			}
 		</style>
 	</head>
 	<body>
 		<h1>wave-function-collapse</h1>
-		<h2>Output:</h2>
-		<button id="generate-output">Generate Output</button>
-		<div><canvas id="output-canvas"></canvas></div>
-		<h2>Input:</h2>
-		<div><canvas id="input-canvas"></canvas></div>
-		<h2>Samples:</h2>
-		<button id="generate-samples">Generate Samples</button>
-		<div id="samples"></div>
+		<div class="input-section">
+			<h2>Input:</h2>
+			<div class="controls">
+				<select id="select-input-image">
+					<option value="/img/pipes.png">Pipes</option>
+					<option value="/img/rocks.png">Rocks</option>
+					<option value="/img/test.png">Test</option>
+					<option value="/img/lines.png">Lines</option>
+					<option value="/img/bubbles.png">Bubbles</option>
+					<option value="/img/maze.png">Maze</option>
+					<option value="/img/house.png">House</option>
+					<option value="/img/face.png">Face</option>
+					<option value="/img/mask.png">Mask</option>
+					<option value="/img/squares.png">Squares</option>
+					<option value="/img/zigs.png">Zigs</option>
+					<option value="/img/spirals.png">Spirals</option>
+					<option value="/img/square-pipes.png">Square Pipes</option>
+				</select>
+				<button id="load-input-image">Load Image</button>
+			</div>
+			<div><canvas id="input-canvas"></canvas></div>
+		</div>
+		<div id="samples-section" style="display:none;">
+			<h2>Samples:</h2>
+			<div class="controls">
+				<!--
+				<label>Width: <input id="sample-width" type="text" value="3"></label>
+				<label>Height: <input id="sample-height" type="text" value="3"></label>
+				-->
+				<label><input id="flip-horizontal" type="checkbox" checked="checked"> Flip horizontal</label>
+				<label><input id="flip-vertical" type="checkbox" checked="checked"> Flip vertical</label>
+				<label><input id="rotate-90" type="checkbox" checked="checked"> Rotate 90</label>
+				<label><input id="rotate-180" type="checkbox" checked="checked"> Rotate 180</label>
+				<!--
+				<label><input id="replace-samples" type="checkbox" checked="checked"> Replace Samples</label>
+				-->
+				<button id="generate-samples">Generate Samples</button>
+			</div>
+			<div id="samples"></div>
+		</div>
+		<div id="output-section" style="display:none;">
+			<h2>Output:</h2>
+			<div class="controls">
+				<label>Width: <input id="sample-width" type="text" value="40"></label>
+				<label>Height: <input id="sample-height" type="text" value="20"></label>
+				<button id="reset-output">Reset</button>
+				<button id="step-output">Step</button>
+				<button id="generate-output">Start Generating</button>
+				<div>Entropy remaining: <span id="entropy-remaining">---</span> <div id="entropy-bar"><div id="entropy-bar-color"></div></div></div>
+			</div>
+			<div><canvas id="output-canvas"></canvas></div>
+		</div>
 	</body>
 </html>

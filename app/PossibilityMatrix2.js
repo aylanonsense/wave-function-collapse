@@ -14,6 +14,7 @@ define([
 		for(var y = 0; y < this.height; y++) {
 			for(var x = 0; x < this.width; x++) {
 				this.pixels.push(new PossibilityPixel({
+					parentMatrix: this,
 					samples: this.samples,
 					sampleWidth: this.sampleWidth,
 					sampleHeight: this.sampleHeight,
@@ -32,6 +33,13 @@ define([
 			return this.pixels[x + y * this.width];
 		}
 	};
+	PossibilityMatrix.prototype.getSumEntropy = function() {
+		var sumEntropy = 0;
+		for(var i = 0; i < this.pixels.length; i++) {
+			sumEntropy += this.pixels[i].getEntropy();
+		}
+		return sumEntropy;
+	};
 	PossibilityMatrix.prototype.step = function() {
 		var pixel = this.findLowestEntropyPixel();
 		if(!pixel) {
@@ -39,20 +47,29 @@ define([
 		}
 		else {
 			pixel.resolve();
-			var propagationStack = [ pixel ];
-			while(propagationStack.length > 0) {
-				var pixel1 = propagationStack.pop();
-				for(var x = pixel1.x - this.sampleWidth + 1; x < pixel1.x + this.sampleWidth; x++) {
-					for(var y = pixel1.y - this.sampleHeight + 1; y < pixel1.y + this.sampleHeight; y++) {
-						var pixel2 = this.getPixelAt(x, y);
-						if(pixel2 && !pixel2.isResolved()) {
-							if(pixel2.cullConflictingSamples(pixel1)) {
-								propagationStack.push(pixel2);
-							}
+			var hasPropagated;
+			var reverse = false;
+			var i;
+			do {
+				hasPropagated = false;
+				if(reverse) {
+					for(i = this.pixels.length - 1; i >= 0; i--) {
+						if(this.pixels[i].requiresPropagation) {
+							this.pixels[i].propagate();
+							hasPropagated = true;
 						}
 					}
 				}
-			}
+				else {
+					for(i = 0; i < this.pixels.length; i++) {
+						if(this.pixels[i].requiresPropagation) {
+							this.pixels[i].propagate();
+							hasPropagated = true;
+						}
+					}
+				}
+				reverse = !reverse;
+			} while(hasPropagated);
 			return false;
 		}
 	};
@@ -62,7 +79,7 @@ define([
 		for(var i = 0; i < this.pixels.length; i++) {
 			var pixel = this.pixels[i];
 			var entropy = pixel.getEntropy() + Math.random() / 10000;
-			if(!pixel.isResolved() && (!minEntropyPixel || entropy < minEntropy)) {
+			if(!pixel.isResolved() /*&& entropy > 0*/ && (!minEntropyPixel || entropy < minEntropy)) {
 				minEntropyPixel = pixel;
 				minEntropy = entropy;
 			}
@@ -87,9 +104,12 @@ define([
 		//draw pixels
 		for(var x = 0; x < this.width; x++) {
 			for(var y = 0; y < this.height; y++) {
-				var color = this.getPixelAt(x, y).getColor();
-				ctx.fillStyle = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + color.a + ')';
-				ctx.fillRect(scale * x + offsetX, scale * y + offsetY, scale, scale);
+				var pixel = this.getPixelAt(x, y);
+				if(!params.changesOnly || pixel._color === null) {
+					var color = pixel.getColor();
+					ctx.fillStyle = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + color.a + ')';
+					ctx.fillRect(scale * x + offsetX, scale * y + offsetY, scale, scale);
+				}
 			}
 		}
 	};
