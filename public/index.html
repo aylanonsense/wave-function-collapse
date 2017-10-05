@@ -1,16 +1,38 @@
 <html>
 	<head>
 		<title>wave-function-collapse</title>
-		<script src="/bundle.js"></script>
+		<script type="text/javascript">
+			var BASE_URL = window.location.pathname;
+			if (BASE_URL.endsWith('/')) {
+				BASE_URL = BASE_URL.substring(0, BASE_URL.length - 1);
+			}
+			(function() {
+				// add script
+				var scripts = document.createElement('script');
+				scripts.setAttribute('src', BASE_URL + '/bundle.js');
+				document.head.appendChild(scripts);
+			})();
+		</script>
 		<style>
 			body {
 				image-rendering: pixelated;
+				display: flex;
+				flex-wrap: wrap;
+				flex-direction: row;
+				justify-content: center;
+			}
+			h2 {
+				margin: 0 0 5px;
 			}
 			.controls {
 				margin-bottom: 10px;
 			}
 			#input-canvas {
+				margin-top: 4px;
 				border: 1px solid black;
+			}
+			#output-section {
+				padding-left: 15px;
 			}
 			#output-canvas {
 				border: 1px solid black;
@@ -38,7 +60,7 @@
 			}
 			#entropy-bar {
 				display: inline-block;
-				width: 340px;
+				width: 191px;
 				height: 10px;
 				margin-top: 10px;
 				border: 1px solid #000;
@@ -51,29 +73,19 @@
 		</style>
 	</head>
 	<body>
-		<h1>wave-function-collapse</h1>
 		<div class="input-section">
 			<h2>Input:</h2>
 			<div class="controls">
 				<select id="select-input-image">
+					<option value="/img/squares.png">Squares</option>
 					<option value="/img/pipes.png">Pipes</option>
-					<option value="/img/rocks.png">Rocks</option>
-					<option value="/img/test.png">Test</option>
 					<option value="/img/lines.png">Lines</option>
 					<option value="/img/bubbles.png">Bubbles</option>
 					<option value="/img/maze.png">Maze</option>
-					<option value="/img/house.png">House</option>
-					<option value="/img/face.png">Face</option>
-					<option value="/img/mask.png">Mask</option>
-					<option value="/img/squares.png">Squares</option>
 					<option value="/img/zigs.png">Zigs</option>
-					<option value="/img/spirals.png">Spirals</option>
-					<option value="/img/square-pipes.png">Square Pipes</option>
-					<option value="/img/etsy.png">Etsy</option>
 				</select>
-				<button id="load-input-image">Load Image</button>
 			</div>
-			<div><canvas id="input-canvas"></canvas></div>
+			<div><canvas id="input-canvas" width="144px" height="136px"></canvas></div>
 		</div>
 		<div id="samples-section" style="display:none;">
 			<h2>Samples:</h2>
@@ -93,18 +105,20 @@
 			</div>
 			<div id="samples"></div>
 		</div>
-		<div id="output-section" style="display:none;">
+		<div id="output-section">
 			<h2>Output:</h2>
 			<div class="controls">
-				<label>Width: <input id="sample-width" type="text" value="40"></label>
-				<label>Height: <input id="sample-height" type="text" value="20"></label>
+				<label>Width: <input id="sample-width" type="text" value="40" style="width:25px"></label>
+				<label>Height: <input id="sample-height" type="text" value="20" style="width:25px"></label>
 				<button id="reset-output">Reset</button>
-				<button id="step-output">Step</button>
+				<button id="step-output" style="display:none;">Step</button>
 				<button id="generate-output">Start Generating</button>
-				<button id="save-as-gif">Save as GIF</button>
-				<div>Entropy remaining: <span id="entropy-remaining">---</span> <div id="entropy-bar"><div id="entropy-bar-color"></div></div></div>
+				<button id="save-as-gif" style="display:none;">Save as GIF</button>
 			</div>
 			<div><canvas id="output-canvas"></canvas></div>
+			<div class="controls">
+				<div>Entropy remaining: <span id="entropy-remaining" style="display:none;">---</span> <div id="entropy-bar"><div id="entropy-bar-color"></div></div></div>
+			</div>
 		</div>
 	</body>
 </html>

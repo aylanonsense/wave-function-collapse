@@ -29,7 +29,7 @@ define([
 				model.graphics(imgData2.data);
 				ctx2.putImageData(imgData2, 0, 0);*/
 			};
-			img.src = src;
+			img.src = BASE_URL + src;
 		});
 	};
 });

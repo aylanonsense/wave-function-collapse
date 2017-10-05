@@ -4,6 +4,7 @@ module.exports = {
 	entry: './app/main.js',
 	output: {
 		filename: 'bundle.js',
+		publicPath: '/games/wave-function-collapse/proxy/',
 		path: path.join(__dirname, 'dist')
 	},
 	module: {
